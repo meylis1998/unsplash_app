@@ -1,15 +1,19 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:models/models.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 import '../../app/config/config.dart';
 import '../bloc/home_bloc.dart';
 
 part 'widgets/empty_state.dart';
 part 'widgets/error.dart';
+part 'widgets/info_chip.dart';
+part 'widgets/link_chip.dart';
 part 'widgets/loading.dart';
 part 'widgets/photo_card.dart';
 part 'widgets/photo_detail_sheet.dart';

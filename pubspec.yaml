@@ -57,6 +57,7 @@ dependencies:
   flutter_pagewise: ^2.0.4
   flutter_dotenv: ^5.2.1
   flutter_svg: ^2.2.0
+  url_launcher: ^6.3.1
 
 dev_dependencies:
   flutter_test:
