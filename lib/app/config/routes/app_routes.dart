@@ -12,6 +12,7 @@ class AppRoutes {
   // Bottom Navigation routes
   static const home = '/home';
   static const favorites = '/favorites';
+  static const photoView = '/photo_view';
 
   // static final GoRoute _bookmarks = GoRoute(
   //   path: bookmarks,

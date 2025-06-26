@@ -14,7 +14,7 @@ class AppTheme {
   static const Color green = Colors.green;
   static const Color blue = Color.fromRGBO(5, 99, 224, 1);
   static const Color scaffoldColorLight = Color.fromRGBO(242, 245, 255, 1);
-  static const Color mainColor = Color.fromRGBO(33, 160, 71, 1);
+  static const Color mainColor = Colors.deepPurple;
   static const Color seeHistoryColor = Color.fromRGBO(5, 99, 224, 1);
   static const Color productBackgroundColor = Color.fromRGBO(239, 239, 239, 1);
   static const String fontFamily = 'Montserrat';

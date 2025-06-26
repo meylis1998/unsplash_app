@@ -11,7 +11,8 @@ class FavoritesView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.black,
+        automaticallyImplyLeading: false,
+        backgroundColor: AppTheme.black,
         toolbarHeight: 80.h,
         title: SvgPicture.asset('assets/icons/logo.svg', width: Constants.deviceWidth(context) / 3),
       ),

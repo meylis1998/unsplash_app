@@ -7,6 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:models/models.dart';
+import 'package:unsplash_app/home/view/widgets/photo.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 import '../../app/config/config.dart';

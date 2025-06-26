@@ -59,6 +59,7 @@ dependencies:
   flutter_svg: ^2.2.0
   url_launcher: ^6.3.1
   google_fonts: ^6.2.1
+  photo_view: ^0.15.0
 
 dev_dependencies:
   flutter_test:

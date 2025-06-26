@@ -27,7 +27,7 @@ class _PhotoDetailsSheetState extends State<_PhotoDetailsSheet> {
       builder: (context, scrollController) {
         return Container(
           decoration: const BoxDecoration(
-            color: Colors.white,
+            color: AppTheme.white,
             borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
           ),
           child: Column(
@@ -103,19 +103,24 @@ class _PhotoDetailsSheetState extends State<_PhotoDetailsSheet> {
     return Stack(
       children: [
         widget.photo.urls.regular != null
-            ? ClipRRect(
-                borderRadius: BorderRadius.circular(12),
-                child: CachedNetworkImage(
-                  imageUrl: widget.photo.urls.regular!,
-                  width: double.infinity,
-                  fit: BoxFit.cover,
-                  placeholder: (context, url) => Container(
-                    height: 200,
-                    color: Colors.grey[200],
-                    child: const Center(child: CircularProgressIndicator()),
+            ? GestureDetector(
+                onTap: () => Navigator.of(
+                  context,
+                ).push(MaterialPageRoute(builder: (context) => PhotoScreen(widget.photo.urls.regular!))),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(12),
+                  child: CachedNetworkImage(
+                    imageUrl: widget.photo.urls.regular!,
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                    placeholder: (context, url) => Container(
+                      height: 200,
+                      color: Colors.grey[200],
+                      child: const Center(child: CircularProgressIndicator()),
+                    ),
+                    errorWidget: (context, url, error) =>
+                        Container(height: 200, color: Colors.grey[200], child: const Icon(Icons.error)),
                   ),
-                  errorWidget: (context, url, error) =>
-                      Container(height: 200, color: Colors.grey[200], child: const Icon(Icons.error)),
                 ),
               )
             : const SizedBox.shrink(),
@@ -123,11 +128,11 @@ class _PhotoDetailsSheetState extends State<_PhotoDetailsSheet> {
           top: 8,
           right: 8,
           child: Material(
-            color: Colors.transparent,
+            color: AppTheme.transparent,
             child: IconButton(
               icon: Icon(
                 isFavorited ? CupertinoIcons.heart_fill : CupertinoIcons.heart,
-                color: isFavorited ? Colors.red : Colors.white,
+                color: isFavorited ? AppTheme.red : AppTheme.white,
               ),
               onPressed: () {
                 setState(() {
