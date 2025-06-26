@@ -14,6 +14,7 @@ part 'widgets/loading.dart';
 part 'widgets/photo_card.dart';
 part 'widgets/photo_detail_sheet.dart';
 part 'widgets/photo_grid.dart';
+part 'widgets/search_box.dart';
 part 'widgets/stat_chip.dart';
 
 class HomeView extends StatelessWidget {
@@ -24,10 +25,7 @@ class HomeView extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black,
-        title: SvgPicture.asset(
-          'assets/icons/logo.svg',
-          width: Constants.deviceWidth(context) / 4,
-        ),
+        title: SvgPicture.asset('assets/icons/logo.svg', width: Constants.deviceWidth(context) / 4),
         actions: [
           IconButton(
             color: Colors.white,
