@@ -1,9 +1,22 @@
 part of '../home_view.dart';
 
-class _PhotoDetailsSheet extends StatelessWidget {
+class _PhotoDetailsSheet extends StatefulWidget {
   final Item photo;
 
   const _PhotoDetailsSheet({Key? key, required this.photo}) : super(key: key);
+
+  @override
+  State<_PhotoDetailsSheet> createState() => _PhotoDetailsSheetState();
+}
+
+class _PhotoDetailsSheetState extends State<_PhotoDetailsSheet> {
+  late bool isFavorited;
+
+  @override
+  void initState() {
+    super.initState();
+    isFavorited = widget.photo.likedByUser;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +76,7 @@ class _PhotoDetailsSheet extends StatelessWidget {
                       const SizedBox(height: 16),
 
                       // Color and blur hash
-                      if (photo.color.isNotEmpty || photo.blurHash.isNotEmpty) _buildColorSection(),
+                      if (widget.photo.color.isNotEmpty || widget.photo.blurHash.isNotEmpty) _buildColorSection(),
 
                       const SizedBox(height: 16),
                       // Alternative slugs
@@ -71,7 +84,7 @@ class _PhotoDetailsSheet extends StatelessWidget {
 
                       const SizedBox(height: 16),
                       // Topics
-                      if (photo.topicSubmissions.isNotEmpty) _buildTopicsSection(),
+                      if (widget.photo.topicSubmissions.isNotEmpty) _buildTopicsSection(),
 
                       const SizedBox(height: 20),
                     ],
@@ -86,33 +99,65 @@ class _PhotoDetailsSheet extends StatelessWidget {
   }
 
   Widget _buildMainImage() {
-    return photo.urls.regular != null
-        ? ClipRRect(
-            borderRadius: BorderRadius.circular(12),
-            child: CachedNetworkImage(
-              imageUrl: photo.urls.regular!,
-              width: double.infinity,
-              fit: BoxFit.cover,
-              placeholder: (context, url) => Container(
-                height: 200,
-                color: Colors.grey[200],
-                child: const Center(child: CircularProgressIndicator()),
+    return Stack(
+      children: [
+        widget.photo.urls.regular != null
+            ? ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: CachedNetworkImage(
+                  imageUrl: widget.photo.urls.regular!,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                  placeholder: (context, url) => Container(
+                    height: 200,
+                    color: Colors.grey[200],
+                    child: const Center(child: CircularProgressIndicator()),
+                  ),
+                  errorWidget: (context, url, error) =>
+                      Container(height: 200, color: Colors.grey[200], child: const Icon(Icons.error)),
+                ),
+              )
+            : const SizedBox.shrink(),
+        Positioned(
+          top: 8,
+          right: 8,
+          child: Material(
+            color: Colors.transparent,
+            child: IconButton(
+              icon: Icon(
+                isFavorited ? CupertinoIcons.heart_fill : CupertinoIcons.heart,
+                color: isFavorited ? Colors.red : Colors.white,
               ),
-              errorWidget: (context, url, error) =>
-                  Container(height: 200, color: Colors.grey[200], child: const Icon(Icons.error)),
+              onPressed: () {
+                setState(() {
+                  isFavorited = !isFavorited;
+                });
+                // TODO: Add your logic to persist the favorite status
+                // e.g., call a method from your BLoC/Cubit/ViewModel
+                // yourBloc.toggleFavorite(widget.photo.id);
+              },
+              iconSize: 32,
+              splashRadius: 24,
+              style: IconButton.styleFrom(
+                backgroundColor: Colors.black.withOpacity(0.3),
+                shape: const CircleBorder(),
+                padding: const EdgeInsets.all(8),
+              ),
             ),
-          )
-        : const SizedBox.shrink();
+          ),
+        ),
+      ],
+    );
   }
 
   Widget _buildTitleSection() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (photo.description != null && photo.description!.isNotEmpty)
-          Text(photo.description!, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-        if (photo.description != null && photo.description!.isNotEmpty) const SizedBox(height: 8),
-        Text(photo.altDescription, style: TextStyle(fontSize: 16, color: Colors.grey[600], height: 1.4)),
+        if (widget.photo.description != null && widget.photo.description!.isNotEmpty)
+          Text(widget.photo.description!, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+        if (widget.photo.description != null && widget.photo.description!.isNotEmpty) const SizedBox(height: 8),
+        Text(widget.photo.altDescription, style: TextStyle(fontSize: 16, color: Colors.grey[600], height: 1.4)),
       ],
     );
   }
@@ -134,10 +179,10 @@ class _PhotoDetailsSheet extends StatelessWidget {
             children: [
               CircleAvatar(
                 radius: 25,
-                backgroundImage: photo.user.profileImage?.medium != null
-                    ? CachedNetworkImageProvider(photo.user.profileImage!.medium!)
+                backgroundImage: widget.photo.user.profileImage?.medium != null
+                    ? CachedNetworkImageProvider(widget.photo.user.profileImage!.medium!)
                     : null,
-                child: photo.user.profileImage?.medium == null ? const Icon(Icons.person) : null,
+                child: widget.photo.user.profileImage?.medium == null ? const Icon(Icons.person) : null,
               ),
               const SizedBox(width: 12),
               Expanded(
@@ -145,17 +190,17 @@ class _PhotoDetailsSheet extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      photo.user.name ?? 'Unknown',
+                      widget.photo.user.name ?? 'Unknown',
                       style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                     ),
-                    if (photo.user.username != null)
-                      Text('@${photo.user.username}', style: TextStyle(fontSize: 14, color: Colors.grey[600])),
-                    if (photo.user.location != null)
+                    if (widget.photo.user.username != null)
+                      Text('@${widget.photo.user.username}', style: TextStyle(fontSize: 14, color: Colors.grey[600])),
+                    if (widget.photo.user.location != null)
                       Row(
                         children: [
                           Icon(Icons.location_on, size: 12, color: Colors.grey[600]),
                           const SizedBox(width: 4),
-                          Text(photo.user.location!, style: TextStyle(fontSize: 12, color: Colors.grey[600])),
+                          Text(widget.photo.user.location!, style: TextStyle(fontSize: 12, color: Colors.grey[600])),
                         ],
                       ),
                   ],
@@ -163,22 +208,22 @@ class _PhotoDetailsSheet extends StatelessWidget {
               ),
             ],
           ),
-          if (photo.user.bio != null && photo.user.bio!.isNotEmpty) ...[
+          if (widget.photo.user.bio != null && widget.photo.user.bio!.isNotEmpty) ...[
             const SizedBox(height: 12),
-            Text(photo.user.bio!, style: TextStyle(fontSize: 14, color: Colors.grey[700], height: 1.4)),
+            Text(widget.photo.user.bio!, style: TextStyle(fontSize: 14, color: Colors.grey[700], height: 1.4)),
           ],
           const SizedBox(height: 12),
           Wrap(
             spacing: 8,
             runSpacing: 8,
             children: [
-              if (photo.user.totalPhotos != null)
-                _InfoChip(icon: Icons.photo_camera, label: '${photo.user.totalPhotos} photos'),
-              if (photo.user.totalLikes != null)
-                _InfoChip(icon: Icons.favorite_border, label: '${photo.user.totalLikes} likes'),
-              if (photo.user.totalCollections != null)
-                _InfoChip(icon: Icons.collections, label: '${photo.user.totalCollections} collections'),
-              if (photo.user.forHire == true)
+              if (widget.photo.user.totalPhotos != null)
+                _InfoChip(icon: Icons.photo_camera, label: '${widget.photo.user.totalPhotos} photos'),
+              if (widget.photo.user.totalLikes != null)
+                _InfoChip(icon: Icons.favorite_border, label: '${widget.photo.user.totalLikes} likes'),
+              if (widget.photo.user.totalCollections != null)
+                _InfoChip(icon: Icons.collections, label: '${widget.photo.user.totalCollections} collections'),
+              if (widget.photo.user.forHire == true)
                 _InfoChip(icon: Icons.work, label: 'Available for hire', color: Colors.green),
             ],
           ),
@@ -204,14 +249,14 @@ class _PhotoDetailsSheet extends StatelessWidget {
             spacing: 8,
             runSpacing: 8,
             children: [
-              _StatChip(icon: Icons.favorite, label: '${photo.likes} likes', color: Colors.red),
+              _StatChip(icon: Icons.favorite, label: '${widget.photo.likes} likes', color: Colors.red),
               _StatChip(
                 icon: Icons.photo_size_select_actual,
-                label: '${photo.width} × ${photo.height}',
+                label: '${widget.photo.width} × ${widget.photo.height}',
                 color: Colors.blue,
               ),
-              if (photo.likedByUser) _StatChip(icon: Icons.favorite, label: 'Liked by you', color: Colors.pink),
-              _StatChip(icon: Icons.category, label: photo.assetType, color: Colors.purple),
+              if (widget.photo.likedByUser) _StatChip(icon: Icons.favorite, label: 'Liked by you', color: Colors.pink),
+              _StatChip(icon: Icons.category, label: widget.photo.assetType, color: Colors.purple),
             ],
           ),
         ],
@@ -232,9 +277,9 @@ class _PhotoDetailsSheet extends StatelessWidget {
         children: [
           const Text('Technical Details', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
           const SizedBox(height: 12),
-          _DetailRow('ID', photo.id, copyable: true),
-          _DetailRow('Slug', photo.slug, copyable: true),
-          _DetailRow('Dimensions', '${photo.width} × ${photo.height} pixels'),
+          _DetailRow('ID', widget.photo.id, copyable: true),
+          _DetailRow('Slug', widget.photo.slug, copyable: true),
+          _DetailRow('Dimensions', '${widget.photo.width} × ${widget.photo.height} pixels'),
           _DetailRow('Aspect Ratio', _calculateAspectRatio()),
           _DetailRow('Megapixels', _calculateMegapixels()),
         ],
@@ -255,9 +300,10 @@ class _PhotoDetailsSheet extends StatelessWidget {
         children: [
           const Text('Timeline', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
           const SizedBox(height: 12),
-          _DetailRow('Created', _formatDate(photo.createdAt)),
-          _DetailRow('Updated', _formatDate(photo.updatedAt)),
-          if (photo.user.updatedAt != null) _DetailRow('User Updated', _formatDate(photo.user.updatedAt!)),
+          _DetailRow('Created', _formatDate(widget.photo.createdAt)),
+          _DetailRow('Updated', _formatDate(widget.photo.updatedAt)),
+          if (widget.photo.user.updatedAt != null)
+            _DetailRow('User Updated', _formatDate(widget.photo.user.updatedAt!)),
         ],
       ),
     );
@@ -280,19 +326,19 @@ class _PhotoDetailsSheet extends StatelessWidget {
             spacing: 8,
             runSpacing: 8,
             children: [
-              if (photo.links.html != null)
-                _LinkChip(icon: Icons.open_in_browser, label: 'View on Unsplash', url: photo.links.html!),
-              if (photo.links.download != null)
-                _LinkChip(icon: Icons.download, label: 'Download', url: photo.links.download!),
-              if (photo.user.links?.html != null)
-                _LinkChip(icon: Icons.person, label: 'Photographer Profile', url: photo.user.links!.html!),
-              if (photo.user.portfolioUrl != null)
-                _LinkChip(icon: Icons.web, label: 'Portfolio', url: photo.user.portfolioUrl!),
-              if (photo.user.instagramUsername != null)
+              if (widget.photo.links.html != null)
+                _LinkChip(icon: Icons.open_in_browser, label: 'View on Unsplash', url: widget.photo.links.html!),
+              if (widget.photo.links.download != null)
+                _LinkChip(icon: Icons.download, label: 'Download', url: widget.photo.links.download!),
+              if (widget.photo.user.links?.html != null)
+                _LinkChip(icon: Icons.person, label: 'Photographer Profile', url: widget.photo.user.links!.html!),
+              if (widget.photo.user.portfolioUrl != null)
+                _LinkChip(icon: Icons.web, label: 'Portfolio', url: widget.photo.user.portfolioUrl!),
+              if (widget.photo.user.instagramUsername != null)
                 _LinkChip(
                   icon: Icons.camera_alt,
                   label: 'Instagram',
-                  url: 'https://instagram.com/${photo.user.instagramUsername}',
+                  url: 'https://instagram.com/${widget.photo.user.instagramUsername}',
                 ),
             ],
           ),
@@ -303,11 +349,16 @@ class _PhotoDetailsSheet extends StatelessWidget {
             spacing: 8,
             runSpacing: 8,
             children: [
-              if (photo.urls.thumb != null) _LinkChip(icon: Icons.image, label: 'Thumbnail', url: photo.urls.thumb!),
-              if (photo.urls.small != null) _LinkChip(icon: Icons.image, label: 'Small', url: photo.urls.small!),
-              if (photo.urls.regular != null) _LinkChip(icon: Icons.image, label: 'Regular', url: photo.urls.regular!),
-              if (photo.urls.full != null) _LinkChip(icon: Icons.image, label: 'Full', url: photo.urls.full!),
-              if (photo.urls.raw != null) _LinkChip(icon: Icons.image, label: 'Raw', url: photo.urls.raw!),
+              if (widget.photo.urls.thumb != null)
+                _LinkChip(icon: Icons.image, label: 'Thumbnail', url: widget.photo.urls.thumb!),
+              if (widget.photo.urls.small != null)
+                _LinkChip(icon: Icons.image, label: 'Small', url: widget.photo.urls.small!),
+              if (widget.photo.urls.regular != null)
+                _LinkChip(icon: Icons.image, label: 'Regular', url: widget.photo.urls.regular!),
+              if (widget.photo.urls.full != null)
+                _LinkChip(icon: Icons.image, label: 'Full', url: widget.photo.urls.full!),
+              if (widget.photo.urls.raw != null)
+                _LinkChip(icon: Icons.image, label: 'Raw', url: widget.photo.urls.raw!),
             ],
           ),
         ],
@@ -328,24 +379,27 @@ class _PhotoDetailsSheet extends StatelessWidget {
         children: [
           const Text('Visual Properties', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
           const SizedBox(height: 12),
-          if (photo.color.isNotEmpty)
+          if (widget.photo.color.isNotEmpty)
             Row(
               children: [
                 Container(
                   width: 24,
                   height: 24,
                   decoration: BoxDecoration(
-                    color: _parseColor(photo.color),
+                    color: _parseColor(widget.photo.color),
                     border: Border.all(color: Colors.grey[300]!),
                     borderRadius: BorderRadius.circular(4),
                   ),
                 ),
                 const SizedBox(width: 8),
-                Text('Dominant Color: ${photo.color}'),
-                IconButton(icon: const Icon(Icons.copy, size: 16), onPressed: () => _copyToClipboard(photo.color)),
+                Text('Dominant Color: ${widget.photo.color}'),
+                IconButton(
+                  icon: const Icon(Icons.copy, size: 16),
+                  onPressed: () => _copyToClipboard(widget.photo.color),
+                ),
               ],
             ),
-          if (photo.blurHash.isNotEmpty) _DetailRow('Blur Hash', photo.blurHash, copyable: true),
+          if (widget.photo.blurHash.isNotEmpty) _DetailRow('Blur Hash', widget.photo.blurHash, copyable: true),
         ],
       ),
     );
@@ -386,7 +440,7 @@ class _PhotoDetailsSheet extends StatelessWidget {
           Wrap(
             spacing: 8,
             runSpacing: 8,
-            children: photo.topicSubmissions.keys
+            children: widget.photo.topicSubmissions.keys
                 .map((topic) => Chip(label: Text(topic), backgroundColor: Colors.teal[100]))
                 .toList(),
           ),
@@ -429,12 +483,12 @@ class _PhotoDetailsSheet extends StatelessWidget {
   }
 
   String _calculateAspectRatio() {
-    final gcd = _gcd(photo.width, photo.height);
-    return '${photo.width ~/ gcd}:${photo.height ~/ gcd}';
+    final gcd = _gcd(widget.photo.width, widget.photo.height);
+    return '${widget.photo.width ~/ gcd}:${widget.photo.height ~/ gcd}';
   }
 
   String _calculateMegapixels() {
-    final mp = (photo.width * photo.height) / 1000000;
+    final mp = (widget.photo.width * widget.photo.height) / 1000000;
     return '${mp.toStringAsFixed(1)} MP';
   }
 
@@ -456,7 +510,7 @@ class _PhotoDetailsSheet extends StatelessWidget {
   }
 
   bool _hasAlternativeSlugs() {
-    final slugs = photo.alternativeSlugs;
+    final slugs = widget.photo.alternativeSlugs;
     return slugs.en != null ||
         slugs.es != null ||
         slugs.ja != null ||
@@ -469,7 +523,7 @@ class _PhotoDetailsSheet extends StatelessWidget {
 
   List<MapEntry<String, String>> _getAlternativeSlugs() {
     final List<MapEntry<String, String>> slugs = [];
-    final alt = photo.alternativeSlugs;
+    final alt = widget.photo.alternativeSlugs;
 
     if (alt.en != null) slugs.add(MapEntry('en', alt.en!));
     if (alt.es != null) slugs.add(MapEntry('es', alt.es!));
