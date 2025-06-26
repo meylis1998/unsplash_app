@@ -23,7 +23,7 @@ class AppRoutes {
     routes: [
       GoRoute(
         path: '/',
-        builder: (context, state) => const HomeView(), // this fires at "/"
+        builder: (context, state) => const HomeView(),
         routes: [
           // GoRoute(
           //   path: 'bookmarks', // "/bookmarks"

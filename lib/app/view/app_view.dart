@@ -14,12 +14,7 @@ class Unsplash extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiRepositoryProvider(
-      providers: [
-        RepositoryProvider(
-          create: (context) =>
-              PhotoRepository(dataSrc: injector<PhotoRemoteDataSrc>()),
-        ),
-      ],
+      providers: [RepositoryProvider(create: (context) => PhotoRepository(dataSrc: injector<PhotoRemoteDataSrc>()))],
       child: const UnsplashView(),
     );
   }
@@ -31,12 +26,7 @@ class UnsplashView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-      providers: [
-        BlocProvider(
-          create: (context) =>
-              HomeBloc(photoRepository: context.read<PhotoRepository>()),
-        ),
-      ],
+      providers: [BlocProvider(create: (context) => HomeBloc(photoRepository: context.read<PhotoRepository>()))],
       child: LayoutBuilder(
         builder: (context, constraints) {
           return ScreenUtilInit(
@@ -45,8 +35,7 @@ class UnsplashView extends StatelessWidget {
               return MaterialApp.router(
                 title: 'Unsplash',
                 debugShowCheckedModeBanner: false,
-                routeInformationProvider:
-                    AppRoutes.router.routeInformationProvider,
+                routeInformationProvider: AppRoutes.router.routeInformationProvider,
                 routeInformationParser: AppRoutes.router.routeInformationParser,
                 routerDelegate: AppRoutes.router.routerDelegate,
               );

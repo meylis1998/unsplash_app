@@ -10,29 +10,20 @@ import 'package:path_provider/path_provider.dart';
 import 'package:unsplash_app/di/di.dart';
 
 Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
-  await runZonedGuarded(
-    () async {
-      WidgetsFlutterBinding.ensureInitialized();
-      await dotenv.load(fileName: ".env");
-      await Hive.initFlutter();
+  await runZonedGuarded(() async {
+    WidgetsFlutterBinding.ensureInitialized();
+    await dotenv.load(fileName: ".env");
+    await Hive.initFlutter();
 
-      final bookmarksBox = await Hive.openBox<String>('bookmarks');
-      injector.registerSingleton<Box<String>>(bookmarksBox);
+    final bookmarksBox = await Hive.openBox<String>('favorites');
+    injector.registerSingleton<Box<String>>(bookmarksBox);
 
-      HydratedBloc.storage = await HydratedStorage.build(
-        storageDirectory: HydratedStorageDirectory(
-          (await getTemporaryDirectory()).path,
-        ),
-      );
+    HydratedBloc.storage = await HydratedStorage.build(
+      storageDirectory: HydratedStorageDirectory((await getTemporaryDirectory()).path),
+    );
 
-      await Future.wait([initServices()]);
-      SystemChrome.setPreferredOrientations([
-        DeviceOrientation.portraitUp,
-        DeviceOrientation.portraitDown,
-      ]);
-      runApp(await builder());
-    },
-    (error, stackTrace) =>
-        log(error.toString(), stackTrace: stackTrace, name: 'ERROR'),
-  );
+    await Future.wait([initServices()]);
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+    runApp(await builder());
+  }, (error, stackTrace) => log(error.toString(), stackTrace: stackTrace, name: 'ERROR'));
 }

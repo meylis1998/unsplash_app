@@ -1,21 +1,55 @@
 part of '../home_view.dart';
 
-class _LoadingWidget extends StatelessWidget {
-  const _LoadingWidget();
+class _LoadingWidget extends StatefulWidget {
+  const _LoadingWidget({Key? key}) : super(key: key);
+
+  @override
+  _LoadingWidgetState createState() => _LoadingWidgetState();
+}
+
+class _LoadingWidgetState extends State<_LoadingWidget> with SingleTickerProviderStateMixin {
+  late final AnimationController _shimmerController;
+
+  @override
+  void initState() {
+    super.initState();
+    _shimmerController = AnimationController(vsync: this, duration: const Duration(milliseconds: 1500))..repeat();
+  }
+
+  @override
+  void dispose() {
+    _shimmerController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          CircularProgressIndicator(),
-          SizedBox(height: 16),
-          Text(
-            'Loading photos...',
-            style: TextStyle(fontSize: 16, color: Colors.grey),
+    return Center(
+      child: AnimatedBuilder(
+        animation: _shimmerController,
+        builder: (context, child) {
+          final shimmerPosition = _shimmerController.value * 2 - 1;
+          return ShaderMask(
+            shaderCallback: (bounds) {
+              return LinearGradient(
+                begin: Alignment(-1 - shimmerPosition, 0),
+                end: Alignment(1 + shimmerPosition, 0),
+                colors: [Colors.blue.shade300, Colors.black, Colors.blue.shade300],
+                stops: const [0.2, 0.5, 0.8],
+              ).createShader(bounds);
+            },
+            blendMode: BlendMode.srcATop,
+            child: child,
+          );
+        },
+        child: const Text(
+          'Loading photos…',
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.w600,
+            color: Colors.grey, // base color for the mask
           ),
-        ],
+        ),
       ),
     );
   }
