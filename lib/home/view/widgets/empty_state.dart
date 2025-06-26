@@ -13,7 +13,7 @@ class _EmptyStateWidget extends StatelessWidget {
           const SizedBox(height: 16),
           Text(
             'No photos found',
-            style: TextStyle(
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
               fontSize: 18,
               fontWeight: FontWeight.w500,
               color: Colors.grey[600],
@@ -22,7 +22,7 @@ class _EmptyStateWidget extends StatelessWidget {
           const SizedBox(height: 8),
           Text(
             'Try refreshing to load photos',
-            style: TextStyle(fontSize: 14, color: Colors.grey[500]),
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontSize: 14, color: Colors.grey[500]),
           ),
         ],
       ),

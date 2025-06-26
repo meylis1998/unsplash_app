@@ -37,10 +37,18 @@ class _SearchBoxWidgetState extends State<_SearchBoxWidget> {
                   filled: true,
                   fillColor: Colors.white,
                   hintText: 'Поиск',
-                  hintStyle: TextStyle(color: Colors.black, fontSize: 18),
+                  hintStyle: Theme.of(
+                    context,
+                  ).textTheme.bodyMedium?.copyWith(color: Colors.black, fontSize: 18),
                   border: OutlineInputBorder(),
-                  enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.zero, borderSide: BorderSide.none),
-                  focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.zero, borderSide: BorderSide.none),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.zero,
+                    borderSide: BorderSide.none,
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.zero,
+                    borderSide: BorderSide.none,
+                  ),
 
                   suffixIcon: Row(
                     mainAxisSize: MainAxisSize.min,

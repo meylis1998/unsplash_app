@@ -15,15 +15,17 @@ class _ErrorWidget extends StatelessWidget {
           children: [
             Icon(Icons.error_outline, size: 64, color: Colors.red[400]),
             const SizedBox(height: 16),
-            const Text(
+            Text(
               'Failed to load photos',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+              style: Theme.of(
+                context,
+              ).textTheme.bodyMedium?.copyWith(fontSize: 18, fontWeight: FontWeight.w500),
             ),
             const SizedBox(height: 8),
             Text(
               'Please check your internet connection and try again',
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 14, color: Colors.grey[600]),
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontSize: 14, color: Colors.grey[600]),
             ),
             const SizedBox(height: 24),
             ElevatedButton.icon(
@@ -31,10 +33,7 @@ class _ErrorWidget extends StatelessWidget {
               icon: const Icon(Icons.refresh),
               label: const Text('Retry'),
               style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 24,
-                  vertical: 12,
-                ),
+                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
               ),
             ),
           ],

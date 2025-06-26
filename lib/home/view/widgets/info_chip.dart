@@ -1,6 +1,6 @@
 part of '../home_view.dart';
 
-Widget _InfoChip({required IconData icon, required String label, Color? color}) {
+Widget _InfoChip({required IconData icon, required String label, Color? color, required BuildContext context}) {
   final chipColor = color ?? Colors.grey[600]!;
   return Container(
     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
@@ -10,7 +10,7 @@ Widget _InfoChip({required IconData icon, required String label, Color? color}) 
       children: [
         Icon(icon, size: 12, color: chipColor),
         const SizedBox(width: 4),
-        Text(label, style: TextStyle(fontSize: 10, color: chipColor)),
+        Text(label, style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontSize: 10, color: chipColor)),
       ],
     ),
   );

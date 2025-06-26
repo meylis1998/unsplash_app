@@ -34,6 +34,8 @@ class UnsplashView extends StatelessWidget {
             builder: (context, child) {
               return MaterialApp.router(
                 title: 'Unsplash',
+                theme: AppTheme().lightTheme,
+                darkTheme: AppTheme().darkTheme,
                 debugShowCheckedModeBanner: false,
                 routeInformationProvider: AppRoutes.router.routeInformationProvider,
                 routeInformationParser: AppRoutes.router.routeInformationParser,

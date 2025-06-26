@@ -18,29 +18,17 @@ class _PhotoCard extends StatelessWidget {
               AspectRatio(
                 aspectRatio: 1,
                 child: Container(
-                  decoration: BoxDecoration(
-                    color: Color(
-                      int.parse(photo.color.replaceFirst('#', '0xFF')),
-                    ),
-                  ),
+                  decoration: BoxDecoration(color: Color(int.parse(photo.color.replaceFirst('#', '0xFF')))),
                   child: CachedNetworkImage(
                     imageUrl: photo.urls.regular!,
                     fit: BoxFit.cover,
                     placeholder: (context, url) => Container(
-                      color: Color(
-                        int.parse(photo.color.replaceFirst('#', '0xFF')),
-                      ),
-                      child: const Center(
-                        child: CircularProgressIndicator(strokeWidth: 2),
-                      ),
+                      color: Color(int.parse(photo.color.replaceFirst('#', '0xFF'))),
+                      child: const Center(child: CircularProgressIndicator(strokeWidth: 2)),
                     ),
                     errorWidget: (context, url, error) => Container(
                       color: Colors.grey[300],
-                      child: const Icon(
-                        Icons.broken_image,
-                        color: Colors.grey,
-                        size: 32,
-                      ),
+                      child: const Icon(Icons.broken_image, color: AppTheme.grey, size: 32),
                     ),
                   ),
                 ),
@@ -55,7 +43,7 @@ class _PhotoCard extends StatelessWidget {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      backgroundColor: Colors.transparent,
+      backgroundColor: AppTheme.transparent,
       builder: (context) => _PhotoDetailsSheet(photo: photo),
     );
   }

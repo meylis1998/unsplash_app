@@ -76,7 +76,8 @@ class _PhotoDetailsSheetState extends State<_PhotoDetailsSheet> {
                       const SizedBox(height: 16),
 
                       // Color and blur hash
-                      if (widget.photo.color.isNotEmpty || widget.photo.blurHash.isNotEmpty) _buildColorSection(),
+                      if (widget.photo.color.isNotEmpty || widget.photo.blurHash.isNotEmpty)
+                        _buildColorSection(),
 
                       const SizedBox(height: 16),
                       // Alternative slugs
@@ -155,9 +156,20 @@ class _PhotoDetailsSheetState extends State<_PhotoDetailsSheet> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (widget.photo.description != null && widget.photo.description!.isNotEmpty)
-          Text(widget.photo.description!, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-        if (widget.photo.description != null && widget.photo.description!.isNotEmpty) const SizedBox(height: 8),
-        Text(widget.photo.altDescription, style: TextStyle(fontSize: 16, color: Colors.grey[600], height: 1.4)),
+          Text(
+            widget.photo.description!,
+            style: Theme.of(
+              context,
+            ).textTheme.bodyMedium?.copyWith(fontSize: 20, fontWeight: FontWeight.bold),
+          ),
+        if (widget.photo.description != null && widget.photo.description!.isNotEmpty)
+          const SizedBox(height: 8),
+        Text(
+          widget.photo.altDescription,
+          style: Theme.of(
+            context,
+          ).textTheme.bodyMedium?.copyWith(fontSize: 16, color: Colors.grey[600], height: 1.4),
+        ),
       ],
     );
   }
@@ -173,7 +185,12 @@ class _PhotoDetailsSheetState extends State<_PhotoDetailsSheet> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('Photographer', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
+          Text(
+            'Photographer',
+            style: Theme.of(
+              context,
+            ).textTheme.bodyMedium?.copyWith(fontSize: 18, fontWeight: FontWeight.w600),
+          ),
           const SizedBox(height: 12),
           Row(
             children: [
@@ -191,16 +208,28 @@ class _PhotoDetailsSheetState extends State<_PhotoDetailsSheet> {
                   children: [
                     Text(
                       widget.photo.user.name ?? 'Unknown',
-                      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                      style: Theme.of(
+                        context,
+                      ).textTheme.bodyMedium?.copyWith(fontSize: 16, fontWeight: FontWeight.w500),
                     ),
                     if (widget.photo.user.username != null)
-                      Text('@${widget.photo.user.username}', style: TextStyle(fontSize: 14, color: Colors.grey[600])),
+                      Text(
+                        '@${widget.photo.user.username}',
+                        style: Theme.of(
+                          context,
+                        ).textTheme.bodyMedium?.copyWith(fontSize: 14, color: Colors.grey[600]),
+                      ),
                     if (widget.photo.user.location != null)
                       Row(
                         children: [
                           Icon(Icons.location_on, size: 12, color: Colors.grey[600]),
                           const SizedBox(width: 4),
-                          Text(widget.photo.user.location!, style: TextStyle(fontSize: 12, color: Colors.grey[600])),
+                          Text(
+                            widget.photo.user.location!,
+                            style: Theme.of(
+                              context,
+                            ).textTheme.bodyMedium?.copyWith(fontSize: 12, color: Colors.grey[600]),
+                          ),
                         ],
                       ),
                   ],
@@ -210,7 +239,12 @@ class _PhotoDetailsSheetState extends State<_PhotoDetailsSheet> {
           ),
           if (widget.photo.user.bio != null && widget.photo.user.bio!.isNotEmpty) ...[
             const SizedBox(height: 12),
-            Text(widget.photo.user.bio!, style: TextStyle(fontSize: 14, color: Colors.grey[700], height: 1.4)),
+            Text(
+              widget.photo.user.bio!,
+              style: Theme.of(
+                context,
+              ).textTheme.bodyMedium?.copyWith(fontSize: 14, color: Colors.grey[700], height: 1.4),
+            ),
           ],
           const SizedBox(height: 12),
           Wrap(
@@ -218,13 +252,30 @@ class _PhotoDetailsSheetState extends State<_PhotoDetailsSheet> {
             runSpacing: 8,
             children: [
               if (widget.photo.user.totalPhotos != null)
-                _InfoChip(icon: Icons.photo_camera, label: '${widget.photo.user.totalPhotos} photos'),
+                _InfoChip(
+                  icon: Icons.photo_camera,
+                  label: '${widget.photo.user.totalPhotos} photos',
+                  context: context,
+                ),
               if (widget.photo.user.totalLikes != null)
-                _InfoChip(icon: Icons.favorite_border, label: '${widget.photo.user.totalLikes} likes'),
+                _InfoChip(
+                  icon: Icons.favorite_border,
+                  label: '${widget.photo.user.totalLikes} likes',
+                  context: context,
+                ),
               if (widget.photo.user.totalCollections != null)
-                _InfoChip(icon: Icons.collections, label: '${widget.photo.user.totalCollections} collections'),
+                _InfoChip(
+                  icon: Icons.collections,
+                  label: '${widget.photo.user.totalCollections} collections',
+                  context: context,
+                ),
               if (widget.photo.user.forHire == true)
-                _InfoChip(icon: Icons.work, label: 'Available for hire', color: Colors.green),
+                _InfoChip(
+                  icon: Icons.work,
+                  label: 'Available for hire',
+                  color: AppTheme.green,
+                  context: context,
+                ),
             ],
           ),
         ],
@@ -243,20 +294,37 @@ class _PhotoDetailsSheetState extends State<_PhotoDetailsSheet> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('Photo Stats', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
+          Text(
+            'Photo Stats',
+            style: Theme.of(
+              context,
+            ).textTheme.bodyMedium?.copyWith(fontSize: 18, fontWeight: FontWeight.w600),
+          ),
           const SizedBox(height: 12),
           Wrap(
             spacing: 8,
             runSpacing: 8,
             children: [
-              _StatChip(icon: Icons.favorite, label: '${widget.photo.likes} likes', color: Colors.red),
+              _StatChip(
+                icon: Icons.favorite,
+                label: '${widget.photo.likes} likes',
+                color: AppTheme.red,
+                context: context,
+              ),
               _StatChip(
                 icon: Icons.photo_size_select_actual,
                 label: '${widget.photo.width} × ${widget.photo.height}',
-                color: Colors.blue,
+                color: AppTheme.blue,
+                context: context,
               ),
-              if (widget.photo.likedByUser) _StatChip(icon: Icons.favorite, label: 'Liked by you', color: Colors.pink),
-              _StatChip(icon: Icons.category, label: widget.photo.assetType, color: Colors.purple),
+              if (widget.photo.likedByUser)
+                _StatChip(icon: Icons.favorite, label: 'Liked by you', color: Colors.pink, context: context),
+              _StatChip(
+                icon: Icons.category,
+                label: widget.photo.assetType,
+                color: Colors.purple,
+                context: context,
+              ),
             ],
           ),
         ],
@@ -275,7 +343,12 @@ class _PhotoDetailsSheetState extends State<_PhotoDetailsSheet> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('Technical Details', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
+          Text(
+            'Technical Details',
+            style: Theme.of(
+              context,
+            ).textTheme.bodyMedium?.copyWith(fontSize: 18, fontWeight: FontWeight.w600),
+          ),
           const SizedBox(height: 12),
           _DetailRow('ID', widget.photo.id, copyable: true),
           _DetailRow('Slug', widget.photo.slug, copyable: true),
@@ -298,7 +371,12 @@ class _PhotoDetailsSheetState extends State<_PhotoDetailsSheet> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('Timeline', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
+          Text(
+            'Timeline',
+            style: Theme.of(
+              context,
+            ).textTheme.bodyMedium?.copyWith(fontSize: 18, fontWeight: FontWeight.w600),
+          ),
           const SizedBox(height: 12),
           _DetailRow('Created', _formatDate(widget.photo.createdAt)),
           _DetailRow('Updated', _formatDate(widget.photo.updatedAt)),
@@ -320,45 +398,86 @@ class _PhotoDetailsSheetState extends State<_PhotoDetailsSheet> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('Links & Downloads', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
+          Text(
+            'Links & Downloads',
+            style: Theme.of(
+              context,
+            ).textTheme.bodyMedium?.copyWith(fontSize: 18, fontWeight: FontWeight.w600),
+          ),
           const SizedBox(height: 12),
           Wrap(
             spacing: 8,
             runSpacing: 8,
             children: [
               if (widget.photo.links.html != null)
-                _LinkChip(icon: Icons.open_in_browser, label: 'View on Unsplash', url: widget.photo.links.html!),
+                _LinkChip(
+                  icon: Icons.open_in_browser,
+                  label: 'View on Unsplash',
+                  url: widget.photo.links.html!,
+                  context: context,
+                ),
               if (widget.photo.links.download != null)
-                _LinkChip(icon: Icons.download, label: 'Download', url: widget.photo.links.download!),
+                _LinkChip(
+                  icon: Icons.download,
+                  label: 'Download',
+                  url: widget.photo.links.downloadLocation!,
+                  context: context,
+                ),
               if (widget.photo.user.links?.html != null)
-                _LinkChip(icon: Icons.person, label: 'Photographer Profile', url: widget.photo.user.links!.html!),
+                _LinkChip(
+                  icon: Icons.person,
+                  label: 'Photographer Profile',
+                  url: widget.photo.user.links!.html!,
+                  context: context,
+                ),
               if (widget.photo.user.portfolioUrl != null)
-                _LinkChip(icon: Icons.web, label: 'Portfolio', url: widget.photo.user.portfolioUrl!),
+                _LinkChip(
+                  icon: Icons.web,
+                  label: 'Portfolio',
+                  url: widget.photo.user.portfolioUrl!,
+                  context: context,
+                ),
               if (widget.photo.user.instagramUsername != null)
                 _LinkChip(
                   icon: Icons.camera_alt,
                   label: 'Instagram',
                   url: 'https://instagram.com/${widget.photo.user.instagramUsername}',
+                  context: context,
                 ),
             ],
           ),
           const SizedBox(height: 12),
-          const Text('Image Sizes', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
+          Text(
+            'Image Sizes',
+            style: Theme.of(
+              context,
+            ).textTheme.bodyMedium?.copyWith(fontSize: 16, fontWeight: FontWeight.w500),
+          ),
           const SizedBox(height: 8),
           Wrap(
             spacing: 8,
             runSpacing: 8,
             children: [
               if (widget.photo.urls.thumb != null)
-                _LinkChip(icon: Icons.image, label: 'Thumbnail', url: widget.photo.urls.thumb!),
+                _LinkChip(
+                  icon: Icons.image,
+                  label: 'Thumbnail',
+                  url: widget.photo.urls.thumb!,
+                  context: context,
+                ),
               if (widget.photo.urls.small != null)
-                _LinkChip(icon: Icons.image, label: 'Small', url: widget.photo.urls.small!),
+                _LinkChip(icon: Icons.image, label: 'Small', url: widget.photo.urls.small!, context: context),
               if (widget.photo.urls.regular != null)
-                _LinkChip(icon: Icons.image, label: 'Regular', url: widget.photo.urls.regular!),
+                _LinkChip(
+                  icon: Icons.image,
+                  label: 'Regular',
+                  url: widget.photo.urls.regular!,
+                  context: context,
+                ),
               if (widget.photo.urls.full != null)
-                _LinkChip(icon: Icons.image, label: 'Full', url: widget.photo.urls.full!),
+                _LinkChip(icon: Icons.image, label: 'Full', url: widget.photo.urls.full!, context: context),
               if (widget.photo.urls.raw != null)
-                _LinkChip(icon: Icons.image, label: 'Raw', url: widget.photo.urls.raw!),
+                _LinkChip(icon: Icons.image, label: 'Raw', url: widget.photo.urls.raw!, context: context),
             ],
           ),
         ],
@@ -377,7 +496,12 @@ class _PhotoDetailsSheetState extends State<_PhotoDetailsSheet> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('Visual Properties', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
+          Text(
+            'Visual Properties',
+            style: Theme.of(
+              context,
+            ).textTheme.bodyMedium?.copyWith(fontSize: 18, fontWeight: FontWeight.w600),
+          ),
           const SizedBox(height: 12),
           if (widget.photo.color.isNotEmpty)
             Row(
@@ -399,7 +523,8 @@ class _PhotoDetailsSheetState extends State<_PhotoDetailsSheet> {
                 ),
               ],
             ),
-          if (widget.photo.blurHash.isNotEmpty) _DetailRow('Blur Hash', widget.photo.blurHash, copyable: true),
+          if (widget.photo.blurHash.isNotEmpty)
+            _DetailRow('Blur Hash', widget.photo.blurHash, copyable: true),
         ],
       ),
     );
@@ -416,9 +541,16 @@ class _PhotoDetailsSheetState extends State<_PhotoDetailsSheet> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('Alternative Slugs', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
+          Text(
+            'Alternative Slugs',
+            style: Theme.of(
+              context,
+            ).textTheme.bodyMedium?.copyWith(fontSize: 18, fontWeight: FontWeight.w600),
+          ),
           const SizedBox(height: 12),
-          ...(_getAlternativeSlugs().map((entry) => _DetailRow(entry.key.toUpperCase(), entry.value, copyable: true))),
+          ...(_getAlternativeSlugs().map(
+            (entry) => _DetailRow(entry.key.toUpperCase(), entry.value, copyable: true),
+          )),
         ],
       ),
     );
@@ -435,7 +567,12 @@ class _PhotoDetailsSheetState extends State<_PhotoDetailsSheet> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('Topics', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
+          Text(
+            'Topics',
+            style: Theme.of(
+              context,
+            ).textTheme.bodyMedium?.copyWith(fontSize: 18, fontWeight: FontWeight.w600),
+          ),
           const SizedBox(height: 12),
           Wrap(
             spacing: 8,
@@ -459,11 +596,16 @@ class _PhotoDetailsSheetState extends State<_PhotoDetailsSheet> {
             width: 120,
             child: Text(
               label,
-              style: const TextStyle(fontWeight: FontWeight.w500, color: Colors.black87),
+              style: Theme.of(
+                context,
+              ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w500, color: Colors.black87),
             ),
           ),
           Expanded(
-            child: Text(value, style: TextStyle(color: Colors.grey[700])),
+            child: Text(
+              value,
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.grey[700]),
+            ),
           ),
           if (copyable)
             IconButton(

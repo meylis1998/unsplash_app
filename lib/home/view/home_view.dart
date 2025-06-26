@@ -3,7 +3,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:models/models.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
@@ -28,15 +30,16 @@ class HomeView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.black,
-        title: SvgPicture.asset('assets/icons/logo.svg', width: Constants.deviceWidth(context) / 4),
+        backgroundColor: AppTheme.black,
+        toolbarHeight: 80.h,
+        title: SvgPicture.asset('assets/icons/logo.svg', width: Constants.deviceWidth(context) / 3),
         actions: [
           IconButton(
-            color: Colors.white,
-            iconSize: 30,
+            color: AppTheme.white,
+            iconSize: 30.sp,
             icon: const Icon(CupertinoIcons.heart),
             onPressed: () {
-              context.read<HomeBloc>().add(const PhotosGet());
+              context.push(AppRoutes.favorites);
             },
           ),
         ],

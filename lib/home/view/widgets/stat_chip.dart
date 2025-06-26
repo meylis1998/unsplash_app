@@ -1,6 +1,6 @@
 part of '../home_view.dart';
 
-Widget _StatChip({required IconData icon, required String label, required Color color}) {
+Widget _StatChip({required IconData icon, required String label, required Color color, required BuildContext context}) {
   return Container(
     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
     decoration: BoxDecoration(
@@ -15,7 +15,9 @@ Widget _StatChip({required IconData icon, required String label, required Color 
         const SizedBox(width: 6),
         Text(
           label,
-          style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500, color: color),
+          style: Theme.of(
+            context,
+          ).textTheme.bodyMedium?.copyWith(fontSize: 12, fontWeight: FontWeight.w500, color: color),
         ),
       ],
     ),

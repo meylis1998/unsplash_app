@@ -13,7 +13,8 @@ class _LoadingWidgetState extends State<_LoadingWidget> with SingleTickerProvide
   @override
   void initState() {
     super.initState();
-    _shimmerController = AnimationController(vsync: this, duration: const Duration(milliseconds: 1500))..repeat();
+    _shimmerController = AnimationController(vsync: this, duration: const Duration(milliseconds: 1500))
+      ..repeat();
   }
 
   @override
@@ -34,7 +35,7 @@ class _LoadingWidgetState extends State<_LoadingWidget> with SingleTickerProvide
               return LinearGradient(
                 begin: Alignment(-1 - shimmerPosition, 0),
                 end: Alignment(1 + shimmerPosition, 0),
-                colors: [Colors.blue.shade300, Colors.black, Colors.blue.shade300],
+                colors: [Colors.blue.shade300, AppTheme.black, Colors.blue.shade300],
                 stops: const [0.2, 0.5, 0.8],
               ).createShader(bounds);
             },
@@ -42,12 +43,12 @@ class _LoadingWidgetState extends State<_LoadingWidget> with SingleTickerProvide
             child: child,
           );
         },
-        child: const Text(
+        child: Text(
           'Loading photos…',
-          style: TextStyle(
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
             fontSize: 20,
             fontWeight: FontWeight.w600,
-            color: Colors.grey, // base color for the mask
+            color: AppTheme.grey, // base color for the mask
           ),
         ),
       ),
