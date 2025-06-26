@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
@@ -12,6 +13,7 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
   await runZonedGuarded(
     () async {
       WidgetsFlutterBinding.ensureInitialized();
+      await dotenv.load(fileName: ".env");
       await Hive.initFlutter();
 
       final bookmarksBox = await Hive.openBox<String>('bookmarks');
@@ -23,7 +25,7 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
         ),
       );
 
-      // await Future.wait([initServices()]);
+      await Future.wait([initServices()]);
       SystemChrome.setPreferredOrientations([
         DeviceOrientation.portraitUp,
         DeviceOrientation.portraitDown,

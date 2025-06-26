@@ -4,12 +4,11 @@ class Item {
   final AlternativeSlugs alternativeSlugs;
   final DateTime createdAt;
   final DateTime updatedAt;
-  final DateTime? promotedAt;
   final int width;
   final int height;
   final String color;
   final String blurHash;
-  final String description;
+  final String? description;
   final String altDescription;
   final List<dynamic> breadcrumbs;
   final Urls urls;
@@ -28,12 +27,11 @@ class Item {
     required this.alternativeSlugs,
     required this.createdAt,
     required this.updatedAt,
-    this.promotedAt,
     required this.width,
     required this.height,
     required this.color,
     required this.blurHash,
-    required this.description,
+    this.description, // Already nullable - removed required
     required this.altDescription,
     required this.breadcrumbs,
     required this.urls,
@@ -41,7 +39,7 @@ class Item {
     required this.likes,
     required this.likedByUser,
     required this.currentUserCollections,
-    this.sponsorship,
+    this.sponsorship, // Already nullable
     required this.topicSubmissions,
     required this.assetType,
     required this.user,
@@ -55,14 +53,11 @@ class Item {
     ),
     createdAt: DateTime.parse(json['created_at'] as String),
     updatedAt: DateTime.parse(json['updated_at'] as String),
-    promotedAt: json['promoted_at'] != null
-        ? DateTime.parse(json['promoted_at'] as String)
-        : null,
     width: json['width'] as int,
     height: json['height'] as int,
     color: json['color'] as String,
     blurHash: json['blur_hash'] as String,
-    description: json['description'] as String,
+    description: json['description'] as String?,
     altDescription: json['alt_description'] as String,
     breadcrumbs: List<dynamic>.from(json['breadcrumbs'] as List),
     urls: Urls.fromJson(json['urls'] as Map<String, dynamic>),
@@ -86,7 +81,6 @@ class Item {
     'alternative_slugs': alternativeSlugs.toJson(),
     'created_at': createdAt.toIso8601String(),
     'updated_at': updatedAt.toIso8601String(),
-    'promoted_at': promotedAt?.toIso8601String(),
     'width': width,
     'height': height,
     'color': color,
@@ -110,28 +104,29 @@ class Item {
 }
 
 class AlternativeSlugs {
-  final String en, es, ja, fr, it, ko, de, pt;
+  final String? en, es, ja, fr, it, ko, de, pt; // Made nullable
+
   const AlternativeSlugs({
-    required this.en,
-    required this.es,
-    required this.ja,
-    required this.fr,
-    required this.it,
-    required this.ko,
-    required this.de,
-    required this.pt,
+    this.en, // Removed required
+    this.es,
+    this.ja,
+    this.fr,
+    this.it,
+    this.ko,
+    this.de,
+    this.pt,
   });
 
   factory AlternativeSlugs.fromJson(Map<String, dynamic> json) =>
       AlternativeSlugs(
-        en: json['en'] as String,
-        es: json['es'] as String,
-        ja: json['ja'] as String,
-        fr: json['fr'] as String,
-        it: json['it'] as String,
-        ko: json['ko'] as String,
-        de: json['de'] as String,
-        pt: json['pt'] as String,
+        en: json['en'] as String?,
+        es: json['es'] as String?,
+        ja: json['ja'] as String?,
+        fr: json['fr'] as String?,
+        it: json['it'] as String?,
+        ko: json['ko'] as String?,
+        de: json['de'] as String?,
+        pt: json['pt'] as String?,
       );
 
   Map<String, dynamic> toJson() => {
@@ -147,23 +142,24 @@ class AlternativeSlugs {
 }
 
 class Urls {
-  final String raw, full, regular, small, thumb, smallS3;
+  final String? raw, full, regular, small, thumb, smallS3; // Made nullable
+
   const Urls({
-    required this.raw,
-    required this.full,
-    required this.regular,
-    required this.small,
-    required this.thumb,
-    required this.smallS3,
+    this.raw, // Removed required
+    this.full,
+    this.regular,
+    this.small,
+    this.thumb,
+    this.smallS3,
   });
 
   factory Urls.fromJson(Map<String, dynamic> json) => Urls(
-    raw: json['raw'] as String,
-    full: json['full'] as String,
-    regular: json['regular'] as String,
-    small: json['small'] as String,
-    thumb: json['thumb'] as String,
-    smallS3: json['small_s3'] as String,
+    raw: json['raw'] as String?,
+    full: json['full'] as String?,
+    regular: json['regular'] as String?,
+    small: json['small'] as String?,
+    thumb: json['thumb'] as String?,
+    smallS3: json['small_s3'] as String?,
   );
 
   Map<String, dynamic> toJson() => {
@@ -177,19 +173,20 @@ class Urls {
 }
 
 class Links {
-  final String self, html, download, downloadLocation;
+  final String? self, html, download, downloadLocation; // Made nullable
+
   const Links({
-    required this.self,
-    required this.html,
-    required this.download,
-    required this.downloadLocation,
+    this.self, // Removed required
+    this.html,
+    this.download,
+    this.downloadLocation,
   });
 
   factory Links.fromJson(Map<String, dynamic> json) => Links(
-    self: json['self'] as String,
-    html: json['html'] as String,
-    download: json['download'] as String,
-    downloadLocation: json['download_location'] as String,
+    self: json['self'] as String?,
+    html: json['html'] as String?,
+    download: json['download'] as String?,
+    downloadLocation: json['download_location'] as String?,
   );
 
   Map<String, dynamic> toJson() => {
@@ -202,93 +199,90 @@ class Links {
 
 class User {
   final String id;
-  final DateTime updatedAt;
-  final String username;
-  final String name;
-  final String firstName;
-  final String lastName;
-  final String twitterUsername;
-  final String portfolioUrl;
-  final String bio;
-  final String location;
-  final UserLinks links;
-  final ProfileImage profileImage;
+  final DateTime? updatedAt; // Made nullable
+  final String? username; // Made nullable
+  final String? name; // Made nullable
+  final String? firstName; // Made nullable
+  final String? lastName; // Made nullable
+  final String? portfolioUrl;
+  final String? bio; // Made nullable
+  final String? location; // Made nullable
+  final UserLinks? links; // Made nullable
+  final ProfileImage? profileImage; // Made nullable
   final String? instagramUsername;
-  final int totalCollections;
-  final int totalLikes;
-  final int totalPhotos;
-  final int totalPromotedPhotos;
-  final int totalIllustrations;
-  final int totalPromotedIllustrations;
-  final bool acceptedTos;
-  final bool forHire;
-  final Social social;
+  final int? totalCollections; // Made nullable
+  final int? totalLikes; // Made nullable
+  final int? totalPhotos; // Made nullable
+  final int? totalPromotedPhotos; // Made nullable
+  final int? totalIllustrations; // Made nullable
+  final int? totalPromotedIllustrations; // Made nullable
+  final bool? acceptedTos; // Made nullable
+  final bool? forHire; // Made nullable
 
   const User({
-    required this.id,
-    required this.updatedAt,
-    required this.username,
-    required this.name,
-    required this.firstName,
-    required this.lastName,
-    required this.twitterUsername,
-    required this.portfolioUrl,
-    required this.bio,
-    required this.location,
-    required this.links,
-    required this.profileImage,
+    required this.id, // ID should always be required
+    this.updatedAt, // Removed required
+    this.username,
+    this.name,
+    this.firstName,
+    this.lastName,
+    this.portfolioUrl,
+    this.bio,
+    this.location,
+    this.links,
+    this.profileImage,
     this.instagramUsername,
-    required this.totalCollections,
-    required this.totalLikes,
-    required this.totalPhotos,
-    required this.totalPromotedPhotos,
-    required this.totalIllustrations,
-    required this.totalPromotedIllustrations,
-    required this.acceptedTos,
-    required this.forHire,
-    required this.social,
+    this.totalCollections,
+    this.totalLikes,
+    this.totalPhotos,
+    this.totalPromotedPhotos,
+    this.totalIllustrations,
+    this.totalPromotedIllustrations,
+    this.acceptedTos,
+    this.forHire,
   });
 
   factory User.fromJson(Map<String, dynamic> json) => User(
     id: json['id'] as String,
-    updatedAt: DateTime.parse(json['updated_at'] as String),
-    username: json['username'] as String,
-    name: json['name'] as String,
-    firstName: json['first_name'] as String,
-    lastName: json['last_name'] as String,
-    twitterUsername: json['twitter_username'] as String,
-    portfolioUrl: json['portfolio_url'] as String,
-    bio: json['bio'] as String,
-    location: json['location'] as String,
-    links: UserLinks.fromJson(json['links'] as Map<String, dynamic>),
-    profileImage: ProfileImage.fromJson(
-      json['profile_image'] as Map<String, dynamic>,
-    ),
+    updatedAt: json['updated_at'] != null
+        ? DateTime.parse(json['updated_at'] as String)
+        : null,
+    username: json['username'] as String?,
+    name: json['name'] as String?,
+    firstName: json['first_name'] as String?,
+    lastName: json['last_name'] as String?,
+    portfolioUrl: json['portfolio_url'] as String?,
+    bio: json['bio'] as String?,
+    location: json['location'] as String?,
+    links: json['links'] != null
+        ? UserLinks.fromJson(json['links'] as Map<String, dynamic>)
+        : null,
+    profileImage: json['profile_image'] != null
+        ? ProfileImage.fromJson(json['profile_image'] as Map<String, dynamic>)
+        : null,
     instagramUsername: json['instagram_username'] as String?,
-    totalCollections: json['total_collections'] as int,
-    totalLikes: json['total_likes'] as int,
-    totalPhotos: json['total_photos'] as int,
-    totalPromotedPhotos: json['total_promoted_photos'] as int,
-    totalIllustrations: json['total_illustrations'] as int,
-    totalPromotedIllustrations: json['total_promoted_illustrations'] as int,
-    acceptedTos: json['accepted_tos'] as bool,
-    forHire: json['for_hire'] as bool,
-    social: Social.fromJson(json['social'] as Map<String, dynamic>),
+    totalCollections: json['total_collections'] as int?,
+    totalLikes: json['total_likes'] as int?,
+    totalPhotos: json['total_photos'] as int?,
+    totalPromotedPhotos: json['total_promoted_photos'] as int?,
+    totalIllustrations: json['total_illustrations'] as int?,
+    totalPromotedIllustrations: json['total_promoted_illustrations'] as int?,
+    acceptedTos: json['accepted_tos'] as bool?,
+    forHire: json['for_hire'] as bool?,
   );
 
   Map<String, dynamic> toJson() => {
     'id': id,
-    'updated_at': updatedAt.toIso8601String(),
+    'updated_at': updatedAt?.toIso8601String(),
     'username': username,
     'name': name,
     'first_name': firstName,
     'last_name': lastName,
-    'twitter_username': twitterUsername,
     'portfolio_url': portfolioUrl,
     'bio': bio,
     'location': location,
-    'links': links.toJson(),
-    'profile_image': profileImage.toJson(),
+    'links': links?.toJson(),
+    'profile_image': profileImage?.toJson(),
     'instagram_username': instagramUsername,
     'total_collections': totalCollections,
     'total_likes': totalLikes,
@@ -298,26 +292,26 @@ class User {
     'total_promoted_illustrations': totalPromotedIllustrations,
     'accepted_tos': acceptedTos,
     'for_hire': forHire,
-    'social': social.toJson(),
   };
 }
 
 class UserLinks {
-  final String self, html, photos, likes, portfolio;
+  final String? self, html, photos, likes, portfolio; // Made nullable
+
   const UserLinks({
-    required this.self,
-    required this.html,
-    required this.photos,
-    required this.likes,
-    required this.portfolio,
+    this.self, // Removed required
+    this.html,
+    this.photos,
+    this.likes,
+    this.portfolio,
   });
 
   factory UserLinks.fromJson(Map<String, dynamic> json) => UserLinks(
-    self: json['self'] as String,
-    html: json['html'] as String,
-    photos: json['photos'] as String,
-    likes: json['likes'] as String,
-    portfolio: json['portfolio'] as String,
+    self: json['self'] as String?,
+    html: json['html'] as String?,
+    photos: json['photos'] as String?,
+    likes: json['likes'] as String?,
+    portfolio: json['portfolio'] as String?,
   );
 
   Map<String, dynamic> toJson() => {
@@ -330,17 +324,18 @@ class UserLinks {
 }
 
 class ProfileImage {
-  final String small, medium, large;
+  final String? small, medium, large; // Made nullable
+
   const ProfileImage({
-    required this.small,
-    required this.medium,
-    required this.large,
+    this.small, // Removed required
+    this.medium,
+    this.large,
   });
 
   factory ProfileImage.fromJson(Map<String, dynamic> json) => ProfileImage(
-    small: json['small'] as String,
-    medium: json['medium'] as String,
-    large: json['large'] as String,
+    small: json['small'] as String?,
+    medium: json['medium'] as String?,
+    large: json['large'] as String?,
   );
 
   Map<String, dynamic> toJson() => {

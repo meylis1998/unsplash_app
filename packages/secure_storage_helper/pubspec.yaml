@@ -1,7 +1,8 @@
-name: photo_repository
-description: "Photos repository from data source"
-publish_to: 'none'
-version: 1.0.0+1
+name: secure_storage_helper
+description: A secure storage helper
+version: 0.1.0+1
+publish_to: none
+
 
 environment:
   sdk: ^3.8.1
@@ -9,21 +10,14 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
-  photo_data_src:
-    path: ../photo_data_src
-
-  models:
-    path: ../../models
-
-  dio_client_handler:
-    path: "../../dio_client_handler"
-  flutter_dotenv: ^5.2.1
+  flutter_secure_storage: ^9.2.4
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^5.0.0
+  flutter_lints: ^6.0.0
+  very_good_analysis: ^9.0.0
+  
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
