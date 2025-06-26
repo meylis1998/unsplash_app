@@ -6,7 +6,7 @@ import 'package:unsplash_client/unsplash_client.dart';
 
 class PhotoRemoteDataSrc implements PhotoDataSrc {
   @override
-  Future<List<Item>> getPhotos({required String accessToken}) async {
+  Future<List<Item>> getPhotos() async {
     try {
       final accessKey = dotenv.env['TOKEN']!;
       final secret = dotenv.env['SECRET'];
