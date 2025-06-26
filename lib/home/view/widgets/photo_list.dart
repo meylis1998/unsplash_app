@@ -1,8 +1,8 @@
 part of '../home_view.dart';
 
-class _PhotoGridWidget extends StatelessWidget {
+class _PhotoListWidget extends StatelessWidget {
   final List<Item> photos;
-  const _PhotoGridWidget({required this.photos});
+  const _PhotoListWidget({required this.photos});
 
   @override
   Widget build(BuildContext context) {

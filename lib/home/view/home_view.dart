@@ -17,7 +17,7 @@ part 'widgets/link_chip.dart';
 part 'widgets/loading.dart';
 part 'widgets/photo_card.dart';
 part 'widgets/photo_detail_sheet.dart';
-part 'widgets/photo_grid.dart';
+part 'widgets/photo_list.dart';
 part 'widgets/search_box.dart';
 part 'widgets/stat_chip.dart';
 
@@ -51,7 +51,7 @@ class HomeView extends StatelessWidget {
               if (state.photos.isEmpty) {
                 return const _EmptyStateWidget();
               }
-              return _PhotoGridWidget(photos: state.photos);
+              return _PhotoListWidget(photos: state.photos);
 
             case LoadingStatus.error:
               return _ErrorWidget(
