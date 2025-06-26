@@ -17,7 +17,7 @@ class PhotoRemoteDataSrc implements PhotoDataSrc {
         ),
       );
 
-      final photos = await client.photos.random(count: 8).go();
+      final photos = await client.photos.random(count: 8, contentFilter: ContentFilter.high).go();
       return Item.listFromJson(photos.json);
     } catch (e) {
       if (kDebugMode) print('Unsplash fetch error: $e');
