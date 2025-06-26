@@ -633,6 +633,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.4.0"
+  unsplash_client:
+    dependency: transitive
+    description:
+      name: unsplash_client
+      sha256: "9beed22c0ce4a0166d7b85bda49be610ea6773d9df8613487febb7518f9bccb2"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.0"
   uuid:
     dependency: transitive
     description:

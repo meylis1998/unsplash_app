@@ -31,7 +31,7 @@ class Item {
     required this.height,
     required this.color,
     required this.blurHash,
-    this.description, // Already nullable - removed required
+    this.description,
     required this.altDescription,
     required this.breadcrumbs,
     required this.urls,
@@ -39,7 +39,7 @@ class Item {
     required this.likes,
     required this.likedByUser,
     required this.currentUserCollections,
-    this.sponsorship, // Already nullable
+    this.sponsorship,
     required this.topicSubmissions,
     required this.assetType,
     required this.user,

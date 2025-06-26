@@ -1,28 +1,27 @@
-import 'package:dio_client_handler/dio_client_handler.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:models/models.dart';
 import 'package:photo_data_src/photo_data_src.dart';
+import 'package:unsplash_client/unsplash_client.dart';
 
 class PhotoRemoteDataSrc implements PhotoDataSrc {
-  final DioClientHandler _dioClientHandler;
-
-  const PhotoRemoteDataSrc({required DioClientHandler dioClientHandler})
-    : _dioClientHandler = dioClientHandler;
-
   @override
   Future<List<Item>> getPhotos({required String accessToken}) async {
     try {
-      final response = await _dioClientHandler.get(
-        path: '/photos/',
-        options: Options(headers: {'Authorization': accessToken}),
+      final accessKey = dotenv.env['TOKEN']!;
+      final secret = dotenv.env['SECRET'];
+
+      final client = UnsplashClient(
+        settings: ClientSettings(
+          credentials: AppCredentials(accessKey: accessKey, secretKey: secret),
+        ),
       );
 
-      return Item.listFromJson(response);
+      final photos = await client.photos.random(count: 8).go();
+      return Item.listFromJson(photos.json);
     } catch (e) {
-      if (kDebugMode) {
-        print(e);
-      }
+      if (kDebugMode) print('Unsplash fetch error: $e');
       rethrow;
-    }
+    } finally {}
   }
 }

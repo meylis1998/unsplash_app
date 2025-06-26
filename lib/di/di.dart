@@ -21,7 +21,7 @@ Future<void> initServices() async {
 
   // ─── Data Sources ─────────────────────────────────────────────────
   injector.registerLazySingleton<PhotoRemoteDataSrc>(
-    () => PhotoRemoteDataSrc(dioClientHandler: injector<DioClientHandler>()),
+    () => PhotoRemoteDataSrc(),
   );
 
   // ─── Repositories ─────────────────────────────────────────────────
