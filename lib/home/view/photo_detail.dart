@@ -40,8 +40,6 @@ class _PhotoDetailsState extends State<PhotoDetail> {
         backgroundColor: AppTheme.black,
         toolbarHeight: 80.h,
         title: SvgPicture.asset('assets/icons/logo.svg', width: Constants.deviceWidth(context) / 3),
-
-        actions: [IconButton(onPressed: () {}, icon: Icon(CupertinoIcons.search))],
       ),
       body: Container(
         decoration: const BoxDecoration(
