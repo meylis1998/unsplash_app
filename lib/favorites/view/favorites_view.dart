@@ -83,7 +83,7 @@ class _FavoritesViewState extends State<FavoritesView> {
                     'Нет закладок',
                     style: Theme.of(
                       context,
-                    ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold, fontSize: 36.sp),
+                    ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold, fontSize: 26.sp),
                   ),
                 ],
               );

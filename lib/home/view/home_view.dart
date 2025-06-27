@@ -144,7 +144,6 @@ class SearchBoxWidget extends StatefulWidget {
 
 class _SearchBoxWidgetState extends State<SearchBoxWidget> {
   final TextEditingController _searchController = TextEditingController();
-  Timer? _debounceTimer;
   StreamSubscription<HomeState>? _blocSubscription;
 
   @override
@@ -161,30 +160,14 @@ class _SearchBoxWidgetState extends State<SearchBoxWidget> {
 
   @override
   void dispose() {
-    _debounceTimer?.cancel();
     _blocSubscription?.cancel();
     _searchController.dispose();
     super.dispose();
   }
 
-  void _onSearchChanged(String query) {
-    setState(() {}); // Update UI to show/hide clear button
-    _debounceTimer?.cancel();
-    _debounceTimer = Timer(const Duration(milliseconds: 500), () {
-      if (mounted) {
-        if (query.trim().isEmpty) {
-          context.read<HomeBloc>().add(const SearchClear());
-        } else {
-          context.read<HomeBloc>().add(PhotosSearch(query.trim()));
-        }
-      }
-    });
-  }
-
   void _clearSearch() {
     _searchController.clear();
     setState(() {}); // Update UI immediately
-    _debounceTimer?.cancel();
     context.read<HomeBloc>().add(const SearchClear());
   }
 
@@ -205,14 +188,14 @@ class _SearchBoxWidgetState extends State<SearchBoxWidget> {
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: TextField(
                 controller: _searchController,
-                onChanged: _onSearchChanged,
+                textInputAction: TextInputAction.search,
                 decoration: InputDecoration(
                   filled: true,
-                  fillColor: Colors.white,
+                  fillColor: AppTheme.white,
                   hintText: 'Поиск',
                   hintStyle: Theme.of(
                     context,
-                  ).textTheme.bodyMedium?.copyWith(color: Colors.black, fontSize: 18),
+                  ).textTheme.bodyMedium?.copyWith(color: AppTheme.black, fontSize: 18),
                   border: OutlineInputBorder(),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.zero,
