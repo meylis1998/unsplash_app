@@ -426,7 +426,7 @@ class _PhotoDetailsState extends State<PhotoDetail> {
                 _LinkChip(
                   icon: Icons.download,
                   label: 'Download',
-                  url: widget.photo.links.downloadLocation!,
+                  url: widget.photo.links.download!,
                   context: context,
                 ),
               if (widget.photo.user.links?.html != null)

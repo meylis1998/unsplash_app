@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:models/models.dart';
 import 'package:unsplash_app/favorites/cubit/favorites_cubit.dart';
 
@@ -37,11 +38,17 @@ class _FavoritesViewState extends State<FavoritesView> {
         toolbarHeight: 80.h,
         title: SvgPicture.asset('assets/icons/logo.svg', width: Constants.deviceWidth(context) / 3),
 
-        actions: [IconButton(onPressed: () {}, icon: Icon(CupertinoIcons.search))],
+        actions: [
+          IconButton(
+            onPressed: () {
+              context.push(AppRoutes.initial);
+            },
+            icon: Icon(CupertinoIcons.search),
+          ),
+        ],
       ),
       body: BlocListener<FavoritesCubit, List<Item>>(
         listener: (context, newList) {
-          // handle removals
           for (var oldChar in List<Item>.from(_items)) {
             if (!newList.any((c) => c.id == oldChar.id)) {
               final index = _items.indexWhere((c) => c.id == oldChar.id);
@@ -56,7 +63,6 @@ class _FavoritesViewState extends State<FavoritesView> {
               );
             }
           }
-          // handle insertions
           for (var newChar in newList) {
             if (!_items.any((c) => c.id == newChar.id)) {
               final insertIndex = newList.indexWhere((c) => c.id == newChar.id);
