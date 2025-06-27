@@ -1,4 +1,4 @@
-part of '../home_view.dart';
+part of 'photo_detail_sheet.dart';
 
 Widget _LinkChip({
   required IconData icon,

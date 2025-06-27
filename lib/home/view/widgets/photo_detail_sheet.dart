@@ -1,105 +1,104 @@
-part of '../home_view.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:models/models.dart';
+import 'package:unsplash_app/favorites/cubit/favorites_cubit.dart';
+import 'package:unsplash_app/home/view/widgets/photo.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
-class _PhotoDetailsSheet extends StatefulWidget {
+import '../../../app/config/config.dart';
+
+part 'info_chip.dart';
+part 'link_chip.dart';
+part 'search_box.dart';
+part 'stat_chip.dart';
+
+class PhotoDetail extends StatefulWidget {
   final Item photo;
 
-  const _PhotoDetailsSheet({Key? key, required this.photo}) : super(key: key);
+  final VoidCallback onFavoriteToggle;
+
+  const PhotoDetail({Key? key, required this.photo, required this.onFavoriteToggle}) : super(key: key);
 
   @override
-  State<_PhotoDetailsSheet> createState() => _PhotoDetailsSheetState();
+  State<PhotoDetail> createState() => _PhotoDetailsState();
 }
 
-class _PhotoDetailsSheetState extends State<_PhotoDetailsSheet> {
-  late bool isFavorited;
-
-  @override
-  void initState() {
-    super.initState();
-    isFavorited = widget.photo.likedByUser;
-  }
-
+class _PhotoDetailsState extends State<PhotoDetail> {
   @override
   Widget build(BuildContext context) {
-    return DraggableScrollableSheet(
-      initialChildSize: 0.9,
-      minChildSize: 0.5,
-      maxChildSize: 0.95,
-      builder: (context, scrollController) {
-        return Container(
-          decoration: const BoxDecoration(
-            color: AppTheme.white,
-            borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-          ),
+    return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        backgroundColor: AppTheme.black,
+        toolbarHeight: 80.h,
+        title: SvgPicture.asset('assets/icons/logo.svg', width: Constants.deviceWidth(context) / 3),
+
+        actions: [IconButton(onPressed: () {}, icon: Icon(CupertinoIcons.search))],
+      ),
+      body: Container(
+        decoration: const BoxDecoration(
+          color: AppTheme.white,
+          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        ),
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(16),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Drag handle
-              Container(
-                width: 40,
-                height: 4,
-                margin: const EdgeInsets.symmetric(vertical: 8),
-                decoration: BoxDecoration(color: Colors.grey[300], borderRadius: BorderRadius.circular(2)),
-              ),
-              Expanded(
-                child: SingleChildScrollView(
-                  controller: scrollController,
-                  padding: const EdgeInsets.all(16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Main image
-                      _buildMainImage(),
-                      const SizedBox(height: 16),
+              // Main image
+              _buildMainImage(item: widget.photo),
+              const SizedBox(height: 16),
 
-                      // Title and description
-                      _buildTitleSection(),
-                      const SizedBox(height: 16),
+              // Title and description
+              _buildTitleSection(),
+              const SizedBox(height: 16),
 
-                      // Photographer info
-                      _buildPhotographerSection(context),
-                      const SizedBox(height: 16),
+              // Photographer info
+              _buildPhotographerSection(context),
+              const SizedBox(height: 16),
 
-                      // Stats section
-                      _buildStatsSection(),
-                      const SizedBox(height: 16),
+              // Stats section
+              _buildStatsSection(),
+              const SizedBox(height: 16),
 
-                      // Technical details
-                      _buildTechnicalSection(),
-                      const SizedBox(height: 16),
+              // Technical details
+              _buildTechnicalSection(),
+              const SizedBox(height: 16),
 
-                      // Dates section
-                      _buildDatesSection(),
-                      const SizedBox(height: 16),
+              // Dates section
+              _buildDatesSection(),
+              const SizedBox(height: 16),
 
-                      // Links section
-                      _buildLinksSection(context),
+              // Links section
+              _buildLinksSection(context),
 
-                      const SizedBox(height: 16),
+              const SizedBox(height: 16),
 
-                      // Color and blur hash
-                      if (widget.photo.color.isNotEmpty || widget.photo.blurHash.isNotEmpty)
-                        _buildColorSection(),
+              // Color and blur hash
+              if (widget.photo.color.isNotEmpty || widget.photo.blurHash.isNotEmpty) _buildColorSection(),
 
-                      const SizedBox(height: 16),
-                      // Alternative slugs
-                      if (_hasAlternativeSlugs()) _buildAlternativeSlugSection(),
+              const SizedBox(height: 16),
+              // Alternative slugs
+              if (_hasAlternativeSlugs()) _buildAlternativeSlugSection(),
 
-                      const SizedBox(height: 16),
-                      // Topics
-                      if (widget.photo.topicSubmissions.isNotEmpty) _buildTopicsSection(),
+              const SizedBox(height: 16),
+              // Topics
+              if (widget.photo.topicSubmissions.isNotEmpty) _buildTopicsSection(),
 
-                      const SizedBox(height: 20),
-                    ],
-                  ),
-                ),
-              ),
+              const SizedBox(height: 20),
             ],
           ),
-        );
-      },
+        ),
+      ),
     );
   }
 
-  Widget _buildMainImage() {
+  Widget _buildMainImage({required Item item}) {
     return Stack(
       children: [
         widget.photo.urls.regular != null
@@ -129,26 +128,25 @@ class _PhotoDetailsSheetState extends State<_PhotoDetailsSheet> {
           right: 8,
           child: Material(
             color: AppTheme.transparent,
-            child: IconButton(
-              icon: Icon(
-                isFavorited ? CupertinoIcons.heart_fill : CupertinoIcons.heart,
-                color: isFavorited ? AppTheme.red : AppTheme.white,
-              ),
-              onPressed: () {
-                setState(() {
-                  isFavorited = !isFavorited;
-                });
-                // TODO: Add your logic to persist the favorite status
-                // e.g., call a method from your BLoC/Cubit/ViewModel
-                // yourBloc.toggleFavorite(widget.photo.id);
+            child: BlocBuilder<FavoritesCubit, List<Item>>(
+              builder: (context, favorites) {
+                final isFavorite = favorites.any((c) => c.id == widget.photo.id);
+
+                return IconButton(
+                  icon: Icon(
+                    isFavorite ? CupertinoIcons.heart_fill : CupertinoIcons.heart,
+                    color: isFavorite ? AppTheme.red : AppTheme.white,
+                  ),
+                  onPressed: widget.onFavoriteToggle,
+                  iconSize: 32,
+                  splashRadius: 24,
+                  style: IconButton.styleFrom(
+                    backgroundColor: Colors.black.withOpacity(0.3),
+                    shape: const CircleBorder(),
+                    padding: const EdgeInsets.all(8),
+                  ),
+                );
               },
-              iconSize: 32,
-              splashRadius: 24,
-              style: IconButton.styleFrom(
-                backgroundColor: Colors.black.withOpacity(0.3),
-                shape: const CircleBorder(),
-                padding: const EdgeInsets.all(8),
-              ),
             ),
           ),
         ),

@@ -1,16 +1,28 @@
-part of '../home_view.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/material.dart';
+import 'package:models/models.dart';
+import 'package:unsplash_app/home/view/widgets/photo_detail_sheet.dart';
 
-class _PhotoCard extends StatelessWidget {
+import '../../../app/config/config.dart';
+
+class PhotoCard extends StatelessWidget {
   final Item photo;
+  final VoidCallback onFavoriteToggle;
 
-  const _PhotoCard({required this.photo});
+  const PhotoCard({required this.photo, required this.onFavoriteToggle});
 
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
       borderRadius: BorderRadius.circular(10),
       child: GestureDetector(
-        onTap: () => _showPhotoDetails(context, photo),
+        onTap: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => PhotoDetail(photo: photo, onFavoriteToggle: onFavoriteToggle),
+            ),
+          );
+        },
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -36,15 +48,6 @@ class _PhotoCard extends StatelessWidget {
           ],
         ),
       ),
-    );
-  }
-
-  void _showPhotoDetails(BuildContext context, Item photo) {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: AppTheme.transparent,
-      builder: (context) => _PhotoDetailsSheet(photo: photo),
     );
   }
 }

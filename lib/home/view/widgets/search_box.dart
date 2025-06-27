@@ -1,11 +1,11 @@
-part of '../home_view.dart';
+part of 'photo_detail_sheet.dart';
 
-class _SearchBoxWidget extends StatefulWidget {
+class SearchBoxWidget extends StatefulWidget {
   @override
-  State<_SearchBoxWidget> createState() => _SearchBoxWidgetState();
+  State<SearchBoxWidget> createState() => _SearchBoxWidgetState();
 }
 
-class _SearchBoxWidgetState extends State<_SearchBoxWidget> {
+class _SearchBoxWidgetState extends State<SearchBoxWidget> {
   final TextEditingController _searchController = TextEditingController();
 
   @override

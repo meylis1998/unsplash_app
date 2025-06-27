@@ -1,6 +1,11 @@
-part of '../home_view.dart';
+part of 'photo_detail_sheet.dart';
 
-Widget _InfoChip({required IconData icon, required String label, Color? color, required BuildContext context}) {
+Widget _InfoChip({
+  required IconData icon,
+  required String label,
+  Color? color,
+  required BuildContext context,
+}) {
   final chipColor = color ?? Colors.grey[600]!;
   return Container(
     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hive/hive.dart';
 import 'package:photo_data_src/photo_data_src.dart';
 import 'package:photo_repository/photo_repository.dart';
+import 'package:unsplash_app/favorites/cubit/favorites_cubit.dart';
 
 import '../../di/di.dart';
 import '../../home/bloc/home_bloc.dart';
@@ -14,7 +16,9 @@ class Unsplash extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiRepositoryProvider(
-      providers: [RepositoryProvider(create: (context) => PhotoRepository(dataSrc: injector<PhotoRemoteDataSrc>()))],
+      providers: [
+        RepositoryProvider(create: (context) => PhotoRepository(dataSrc: injector<PhotoRemoteDataSrc>())),
+      ],
       child: const UnsplashView(),
     );
   }
@@ -26,7 +30,10 @@ class UnsplashView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-      providers: [BlocProvider(create: (context) => HomeBloc(photoRepository: context.read<PhotoRepository>()))],
+      providers: [
+        BlocProvider(create: (context) => HomeBloc(photoRepository: context.read<PhotoRepository>())),
+        BlocProvider(create: (context) => FavoritesCubit(injector<Box<String>>(instanceName: 'favorites'))),
+      ],
       child: LayoutBuilder(
         builder: (context, constraints) {
           return ScreenUtilInit(

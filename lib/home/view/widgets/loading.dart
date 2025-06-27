@@ -36,7 +36,7 @@ class _LoadingWidgetState extends State<_LoadingWidget> with SingleTickerProvide
                 begin: Alignment(-1 - shimmerPosition, 0),
                 end: Alignment(1 + shimmerPosition, 0),
                 colors: [Colors.blue.shade300, AppTheme.black, Colors.blue.shade300],
-                stops: const [0.2, 0.5, 0.8],
+                stops: const [0.1, 0.5, 0.9],
               ).createShader(bounds);
             },
             blendMode: BlendMode.srcATop,

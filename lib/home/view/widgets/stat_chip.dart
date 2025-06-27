@@ -1,6 +1,11 @@
-part of '../home_view.dart';
+part of 'photo_detail_sheet.dart';
 
-Widget _StatChip({required IconData icon, required String label, required Color color, required BuildContext context}) {
+Widget _StatChip({
+  required IconData icon,
+  required String label,
+  required Color color,
+  required BuildContext context,
+}) {
   return Container(
     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
     decoration: BoxDecoration(
