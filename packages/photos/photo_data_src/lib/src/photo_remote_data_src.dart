@@ -5,23 +5,32 @@ import 'package:photo_data_src/photo_data_src.dart';
 import 'package:unsplash_client/unsplash_client.dart';
 
 class PhotoRemoteDataSrc implements PhotoDataSrc {
+  late final UnsplashClient _client = UnsplashClient(
+    settings: ClientSettings(
+      credentials: AppCredentials(accessKey: dotenv.env['TOKEN']!, secretKey: dotenv.env['SECRET']),
+    ),
+  );
+
   @override
   Future<List<Item>> getPhotos() async {
     try {
-      final accessKey = dotenv.env['TOKEN']!;
-      final secret = dotenv.env['SECRET'];
-
-      final client = UnsplashClient(
-        settings: ClientSettings(
-          credentials: AppCredentials(accessKey: accessKey, secretKey: secret),
-        ),
-      );
-
-      final photos = await client.photos.random(count: 8, contentFilter: ContentFilter.high).go();
+      final photos = await _client.photos.random(count: 8, contentFilter: ContentFilter.high).go();
       return Item.listFromJson(photos.json);
     } catch (e) {
       if (kDebugMode) print('Unsplash fetch error: $e');
       rethrow;
-    } finally {}
+    }
+  }
+
+  @override
+  Future<List<Item>> searchPhotos({required String query}) async {
+    try {
+      final results = await _client.search.photos(query).go();
+
+      return Item.listFromJson(results.json['results']);
+    } catch (e) {
+      if (kDebugMode) print('Unsplash fetch error: $e');
+      rethrow;
+    }
   }
 }

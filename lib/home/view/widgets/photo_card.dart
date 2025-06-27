@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:models/models.dart';
-import 'package:unsplash_app/home/view/widgets/photo_detail_sheet.dart';
+import 'package:unsplash_app/home/view/photo_detail.dart';
 
 import '../../../app/config/config.dart';
 

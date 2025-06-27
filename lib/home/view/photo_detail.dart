@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -10,12 +12,13 @@ import 'package:unsplash_app/favorites/cubit/favorites_cubit.dart';
 import 'package:unsplash_app/home/view/widgets/photo.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
-import '../../../app/config/config.dart';
+import '../../app/config/config.dart';
+import '../bloc/home_bloc.dart';
 
-part 'info_chip.dart';
-part 'link_chip.dart';
-part 'search_box.dart';
-part 'stat_chip.dart';
+part 'widgets/info_chip.dart';
+part 'widgets/link_chip.dart';
+part 'widgets/search_box.dart';
+part 'widgets/stat_chip.dart';
 
 class PhotoDetail extends StatefulWidget {
   final Item photo;

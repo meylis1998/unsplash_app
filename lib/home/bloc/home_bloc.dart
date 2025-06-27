@@ -9,9 +9,12 @@ part 'home_event.dart';
 part 'home_state.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
-  HomeBloc({required PhotoRepository photoRepository}) : _photoRepository = photoRepository, super(const HomeState()) {
+  HomeBloc({required PhotoRepository photoRepository})
+    : _photoRepository = photoRepository,
+      super(const HomeState()) {
     on<PhotosGet>((event, emit) async => await _photosGet(event, emit));
-
+    on<PhotosSearch>((event, emit) async => await _photosSearch(event, emit));
+    on<SearchClear>((event, emit) => _searchClear(event, emit));
     add(PhotosGet());
   }
 
@@ -30,5 +33,42 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         print(e);
       }
     }
+  }
+
+  Future<void> _photosSearch(PhotosSearch event, Emitter<HomeState> emit) async {
+    if (event.query.trim().isEmpty) {
+      emit(state.copyWith(searchResults: [], searchQuery: '', isSearching: false));
+      return;
+    }
+
+    emit(state.copyWith(searchStatus: LoadingStatus.loading, searchQuery: event.query, isSearching: true));
+
+    try {
+      final searchResults = await _photoRepository.searchPhotos(query: event.query);
+      emit(
+        state.copyWith(
+          searchResults: searchResults,
+          searchStatus: LoadingStatus.done,
+          searchQuery: event.query,
+          isSearching: true,
+        ),
+      );
+    } catch (e) {
+      emit(state.copyWith(searchStatus: LoadingStatus.error, searchQuery: event.query, isSearching: true));
+      if (kDebugMode) {
+        print('Search error: $e');
+      }
+    }
+  }
+
+  void _searchClear(SearchClear event, Emitter<HomeState> emit) {
+    emit(
+      state.copyWith(
+        searchResults: [],
+        searchQuery: '',
+        isSearching: false,
+        searchStatus: LoadingStatus.initial,
+      ),
+    );
   }
 }

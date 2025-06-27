@@ -1,6 +1,6 @@
 part of 'home_bloc.dart';
 
-class HomeEvent extends Equatable {
+abstract class HomeEvent extends Equatable {
   const HomeEvent();
 
   @override
@@ -9,4 +9,17 @@ class HomeEvent extends Equatable {
 
 class PhotosGet extends HomeEvent {
   const PhotosGet();
+}
+
+class PhotosSearch extends HomeEvent {
+  final String query;
+
+  const PhotosSearch(this.query);
+
+  @override
+  List<Object> get props => [query];
+}
+
+class SearchClear extends HomeEvent {
+  const SearchClear();
 }

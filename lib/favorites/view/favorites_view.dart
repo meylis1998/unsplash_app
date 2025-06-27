@@ -65,49 +65,61 @@ class _FavoritesViewState extends State<FavoritesView> {
             }
           }
         },
-        child: _items.isEmpty
-            ? Center(
-                child: Text(
-                  'Нет закладок',
-                  style: Theme.of(
-                    context,
-                  ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold, fontSize: 20.sp),
-                ),
-              )
-            : BlocBuilder<FavoritesCubit, List<Item>>(
-                builder: (context, state) {
-                  return Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16.w),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        SizedBox(height: 20.h),
-                        Text(
-                          'Избранное',
-                          style: Theme.of(
-                            context,
-                          ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold, fontSize: 36.sp),
-                        ),
-                        SizedBox(height: 40.h),
-                        Expanded(
-                          child: ListView.separated(
-                            separatorBuilder: (context, index) => SizedBox(height: 20.h),
-                            key: _listKey,
-                            itemCount: _items.length,
-                            itemBuilder: (context, index) {
-                              final item = _items[index];
-                              return PhotoCard(
-                                photo: item,
-                                onFavoriteToggle: () => context.read<FavoritesCubit>().toggle(item),
-                              );
-                            },
-                          ),
-                        ),
-                      ],
+        child: BlocBuilder<FavoritesCubit, List<Item>>(
+          builder: (context, state) {
+            _items = List.from(state);
+            if (_items.isEmpty) {
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Center(
+                    child: Container(
+                      width: Constants.deviceWidth(context) / 3,
+                      height: Constants.deviceHeight(context) / 3,
+                      child: SvgPicture.asset('assets/icons/favorite.svg'),
                     ),
-                  );
-                },
+                  ),
+                  Text(
+                    'Нет закладок',
+                    style: Theme.of(
+                      context,
+                    ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold, fontSize: 36.sp),
+                  ),
+                ],
+              );
+            }
+            return Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.w),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(height: 20.h),
+                  Text(
+                    'Избранное',
+                    style: Theme.of(
+                      context,
+                    ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold, fontSize: 36.sp),
+                  ),
+                  SizedBox(height: 40.h),
+                  Expanded(
+                    child: ListView.separated(
+                      separatorBuilder: (context, index) => SizedBox(height: 20.h),
+                      key: _listKey,
+                      itemCount: _items.length,
+                      itemBuilder: (context, index) {
+                        final item = _items[index];
+                        return PhotoCard(
+                          photo: item,
+                          onFavoriteToggle: () => context.read<FavoritesCubit>().toggle(item),
+                        );
+                      },
+                    ),
+                  ),
+                ],
               ),
+            );
+          },
+        ),
       ),
     );
   }

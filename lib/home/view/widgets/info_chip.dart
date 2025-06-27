@@ -1,4 +1,4 @@
-part of 'photo_detail_sheet.dart';
+part of '../photo_detail.dart';
 
 Widget _InfoChip({
   required IconData icon,

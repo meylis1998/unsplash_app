@@ -17,4 +17,13 @@ class PhotoRepository {
       rethrow;
     }
   }
+
+  Future<List<Item>> searchPhotos({required String query}) async {
+    try {
+      return await _dataSrc.searchPhotos(query: query);
+    } catch (e) {
+      if (kDebugMode) print('Repository searchPhotos error: $e');
+      rethrow;
+    }
+  }
 }
